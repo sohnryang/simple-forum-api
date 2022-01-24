@@ -7,7 +7,11 @@ import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     UsersModule,
-    TypeOrmModule.forRoot({ type: 'postgres', url: process.env.DATABASE_URL }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
