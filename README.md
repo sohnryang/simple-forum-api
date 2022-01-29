@@ -16,9 +16,9 @@ A REST API for a simple forum website.
   
   - Posts can be searched using title, content, author username and hashtags.
 
-- Authentication
+- Authorization
   
-  - JWT-based authentication for some operations.
+  - JWT-based authorization for some operations.
 
 ## API specs
 
@@ -32,11 +32,14 @@ POST /users
 
 ##### Request body
 
-Instance of `UserEntity`. However, the field `id` will be ignored.
-
-##### Response body
-
-If successful, the response body contains a newly created instance of `UserEntity`.
+```json
+{
+  "email": "...",
+  "birthday": "...",
+  "username": "...",
+  "password": "..."
+}
+```
 
 #### Get a user's info
 
@@ -46,7 +49,7 @@ GET /users/<user ID>
 
 ##### Response body
 
-If successful, the response body contains an instance of `UserEntity` which corresponds to the given ID.
+If successful, the response body contains email address, birthday, and username under field `email`, `birthday`, and `username` respectively.
 
 #### Update user info
 
@@ -58,25 +61,17 @@ PUT /users/<user ID>
 
 ```json
 {
-  "token": "{JWT token}",
-  "patch": {...} // An instance of UserEntity
+  "email": "...",
+  "birthday": "...",
+  "username": "...",
+  "password": "..."
 }
 ```
-
-`patch` contains an instance of `UserEntity`. The user info will be updated according to the provided instance.
 
 #### Delete user
 
 ```
 DELETE /users/<user ID>
-```
-
-##### Request body
-
-```json
-{
-  "token": "{JWT token}"
-}
 ```
 
 ### Posts
@@ -91,16 +86,11 @@ POST /posts
 
 ```json
 {
-  "token": "{JWT token}",
-  "post": {...} // An instance of PostEntity
+  "title": "...",
+  "content": "...",
+  "hashtags": ["...", "..."]
 }
 ```
-
-`post` contains an instance of `PostEntity`. However, the field `id` will be ignored.
-
-##### Response body
-
-If successful, the response body contains a newly created instance of `PostEntity`.
 
 #### List posts
 
@@ -110,7 +100,9 @@ GET /posts
 
 ##### Response body
 
-TBA with pagination
+If successful, the response body contains an array of `PostEntity` instances.
+
+TODO: add pagination
 
 #### Get a post
 
@@ -132,25 +124,16 @@ PUT /posts/<post ID>
 
 ```json
 {
-  "token": "{JWT token}",
-  "patch": {...} // An instance of PostEntity
+  "title": "...",
+  "content": "...",
+  "hashtags": ["...", "..."]
 }
 ```
-
-`patch` contains an instance of `PostEntity`. The title and content of the post will be updated according to the provided instance.
 
 #### Delete post
 
 ```
 DELETE /posts/<post ID>
-```
-
-##### Request body
-
-```json
-{
-  "token": "{JWT token}"
-}
 ```
 
 ### Search
@@ -165,11 +148,77 @@ POST /search
 
 ```json
 {
-  "keyword": "keyword for search",
-  "hashtags": [...] // A list of hashtags
+  "keyword": "...",
+  "hashtags": [...], // A list of hashtags
+  "author": "..."
 }
 ```
 
+##### Response body
+
+If successful, the response body contains an array of `PostEntity` instances.
+
 ### Comments
 
-TBA
+#### Create comment for a post
+
+```
+POST /comments/<post ID>
+```
+
+##### Request body
+
+```json
+{
+  "contents": "..."
+}
+```
+
+#### Get comments for a post
+
+```
+GET /comments/<post ID>
+```
+
+##### Response body
+
+If successful, the response body contains an array of `CommentEntity` instances.
+
+TODO: add pagination
+
+#### Get a single comment
+
+```
+GET /comments/<post ID>/<comment ID>
+```
+
+##### Response body
+
+If successful, the response body contains an instance of `CommentEntity` which corresponds to the given post ID and comment ID.
+
+#### Delete comment
+
+```
+DELETE /comments/<post ID>/<comment ID>
+```
+
+### Authentication
+
+#### Get JWT token
+
+```
+POST /auth
+```
+
+##### Request body
+
+```json
+{
+  "email": "...",
+  "password": "..."
+}
+```
+
+##### Response body
+
+If successful, the response contains the generated JWT under field `token`.
