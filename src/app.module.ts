@@ -13,6 +13,7 @@ import { UsersModule } from './users/users.module';
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
       autoLoadEntities: true,
+      ssl: { rejectUnauthorized: false },
     }),
   ],
   controllers: [AppController],
