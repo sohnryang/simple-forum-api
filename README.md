@@ -47,7 +47,7 @@ If successful, the response body contains email address, birthday, and username 
 #### Update user info
 
 ```
-PUT /users/<user ID>
+PATCH /users/<user ID>
 ```
 
 ##### Request body
@@ -110,7 +110,7 @@ If successful, the response body contains an instance of `PostEntity` which corr
 #### Update post
 
 ```
-PUT /posts/<post ID>
+PATCH /posts/<post ID>
 ```
 
 ##### Request body
