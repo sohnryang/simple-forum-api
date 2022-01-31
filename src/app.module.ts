@@ -13,7 +13,10 @@ import { UsersModule } from './users/users.module';
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: true,
       autoLoadEntities: true,
-      ssl: { rejectUnauthorized: false },
+      ssl:
+        process.env.NODE_ENV == 'production'
+          ? { rejectUnauthorized: false }
+          : false,
     }),
   ],
   controllers: [AppController],
