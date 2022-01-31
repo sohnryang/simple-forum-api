@@ -8,9 +8,11 @@ import { UsersModule } from './users/users.module';
   imports: [
     UsersModule,
     TypeOrmModule.forRoot({
-      type: 'postgres',
       url: process.env.DATABASE_URL,
-      ssl: process.env.NODE_ENV == 'production',
+      type: 'postgres',
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: true,
+      autoLoadEntities: true,
     }),
   ],
   controllers: [AppController],
