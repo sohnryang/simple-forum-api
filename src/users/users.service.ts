@@ -53,6 +53,7 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
+    if (!this.userRepository.findOne(id)) throw new NotFoundException();
     const user = new User();
     user.username = updateUserDto.username;
     user.birthday = updateUserDto.birthday;
