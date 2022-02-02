@@ -54,7 +54,6 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = new User();
-    user.email = updateUserDto.email;
     user.username = updateUserDto.username;
     user.birthday = updateUserDto.birthday;
     user.passwordHash = await argon2.hash(updateUserDto.password, {
