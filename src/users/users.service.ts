@@ -5,11 +5,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import * as argon2 from 'argon2';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    private jwtService: JwtService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -50,6 +52,17 @@ export class UsersService {
   async findByEmail(email: string) {
     const findResult = await this.userRepository.findOne({ email: email });
     return findResult;
+  }
+
+  async validateUser(email: string, password: string) {
+    const user = await this.userRepository.findOne({ email: email });
+    if (user && (await argon2.verify(user.passwordHash, password)))
+      return { id: user.id };
+    return null;
+  }
+
+  async login(user: any) {
+    return { token: this.jwtService.sign({ sub: user.id }) };
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
