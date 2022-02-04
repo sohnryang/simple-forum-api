@@ -44,6 +44,25 @@ GET /users/<user ID>
 
 If successful, the response body contains email address, birthday, and username under field `email`, `birthday`, and `username` respectively.
 
+#### Get JWT token
+
+```
+POST /users/auth
+```
+
+##### Request body
+
+```json
+{
+  "email": "...",
+  "password": "..."
+}
+```
+
+##### Response body
+
+If successful, the response contains the generated JWT under field `token`.
+
 #### Update user info
 
 ```
@@ -194,24 +213,3 @@ If successful, the response body contains an instance of `CommentEntity` which c
 ```
 DELETE /comments/<post ID>/<comment ID>
 ```
-
-### Authentication
-
-#### Get JWT token
-
-```
-POST /auth
-```
-
-##### Request body
-
-```json
-{
-  "email": "...",
-  "password": "..."
-}
-```
-
-##### Response body
-
-If successful, the response contains the generated JWT under field `token`.
