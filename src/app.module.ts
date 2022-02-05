@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
+import { ForumpostsModule } from './forumposts/forumposts.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module';
           ? { rejectUnauthorized: false }
           : false,
     }),
+    ForumpostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
