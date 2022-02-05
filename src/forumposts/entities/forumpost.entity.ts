@@ -16,4 +16,10 @@ export class Forumpost {
 
   @Column()
   hashtags: string;
+
+  @Column({ type: 'timestamptz' })
+  creationTimestamp: Date;
+
+  @Column({ type: 'timestamptz', nullable: true })
+  editTimestamp: Date;
 }
