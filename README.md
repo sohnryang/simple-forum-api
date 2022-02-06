@@ -148,12 +148,10 @@ PATCH /posts/<post ID>
 DELETE /posts/<post ID>
 ```
 
-### Search
-
 #### Send search query
 
 ```
-POST /search
+POST /posts/search
 ```
 
 ##### Request body
