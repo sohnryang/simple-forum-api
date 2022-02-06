@@ -8,12 +8,14 @@ import { Repository } from 'typeorm';
 import { CreateForumpostDto } from './dto/create-forumpost.dto';
 import { UpdateForumpostDto } from './dto/update-forumpost.dto';
 import { Forumpost } from './entities/forumpost.entity';
+import { Hashtag } from './entities/hashtag.entity';
 
 @Injectable()
 export class ForumpostsService {
   constructor(
     @InjectRepository(Forumpost)
     private forumpostRepository: Repository<Forumpost>,
+    @InjectRepository(Hashtag) private hashtagRepository: Repository<Hashtag>,
   ) {}
 
   async create(authorId: number, createForumpostDto: CreateForumpostDto) {
@@ -21,7 +23,15 @@ export class ForumpostsService {
     post.authorId = authorId;
     post.title = createForumpostDto.title;
     post.content = createForumpostDto.content;
-    post.hashtags = createForumpostDto.hashtags.join(' ');
+    post.hashtags = [];
+    for (const hashtagName of createForumpostDto.hashtags) {
+      let hashtag = await this.hashtagRepository.findOne({ name: hashtagName });
+      if (!hashtag) {
+        hashtag = new Hashtag();
+        hashtag.name = hashtagName;
+      }
+      post.hashtags.push(hashtag);
+    }
     post.creationTimestamp = new Date();
     post.editTimestamp = null;
     await this.forumpostRepository.save(post);
@@ -29,7 +39,7 @@ export class ForumpostsService {
 
   private entityToResponse(entity: Forumpost) {
     const { hashtags, ...otherProps } = entity;
-    return { ...otherProps, hashtags: hashtags.split(' ') };
+    return { ...otherProps, hashtags: hashtags.map((o) => o.name) };
   }
 
   async findAll() {
@@ -56,7 +66,15 @@ export class ForumpostsService {
     const post = new Forumpost();
     post.title = updateForumpostDto.title;
     post.content = updateForumpostDto.content;
-    post.hashtags = updateForumpostDto.hashtags.join(' ');
+    post.hashtags = [];
+    for (const hashtagName of updateForumpostDto.hashtags) {
+      let hashtag = await this.hashtagRepository.findOne({ name: hashtagName });
+      if (!hashtag) {
+        hashtag = new Hashtag();
+        hashtag.name = hashtagName;
+      }
+      post.hashtags.push(hashtag);
+    }
     post.editTimestamp = new Date();
     await this.forumpostRepository.update(id, post);
   }
