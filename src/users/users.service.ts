@@ -43,6 +43,7 @@ export class UsersService {
     if (findResult == undefined)
       throw new NotFoundException(`User for id ${id} not found`);
     return {
+      id: findResult.id,
       email: findResult.email,
       birthday: findResult.birthday,
       username: findResult.username,
