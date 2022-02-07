@@ -8,7 +8,6 @@ import {
   Delete,
   UseGuards,
   Request,
-  ForbiddenException,
 } from '@nestjs/common';
 import { ForumpostsService } from './forumposts.service';
 import { CreateForumpostDto } from './dto/create-forumpost.dto';
