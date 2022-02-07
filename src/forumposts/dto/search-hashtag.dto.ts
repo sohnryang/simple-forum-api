@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class SearchHashtagDto {
-  @ApiProperty()
-  name: string;
+  @ApiProperty({ description: 'Keyword for hashtag search' })
+  keyword: string;
 }

@@ -103,7 +103,7 @@ export class ForumpostsService {
 
   async searchHashtag(searchHashtagDto: SearchHashtagDto) {
     return await this.hashtagRepository.find({
-      name: Like(`%${searchHashtagDto.name}%`),
+      name: Like(`%${searchHashtagDto.keyword}%`),
     });
   }
 }

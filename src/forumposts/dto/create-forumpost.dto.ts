@@ -1,12 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateForumpostDto {
-  @ApiProperty()
+  @ApiProperty({ description: 'Title of a post' })
   title: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Content of a post' })
   content: string;
 
-  @ApiProperty()
+  @ApiProperty({ description: 'Hashtags of a post', type: [String] })
   hashtags: string[];
 }
