@@ -15,7 +15,9 @@ import { CreateForumpostDto } from './dto/create-forumpost.dto';
 import { UpdateForumpostDto } from './dto/update-forumpost.dto';
 import { JwtAuthGuard } from 'src/users/jwt-auth.guard';
 import { SearchHashtagDto } from './dto/search-hashtag.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('posts')
 @Controller('posts')
 export class ForumpostsController {
   constructor(private readonly forumpostsService: ForumpostsService) {}
