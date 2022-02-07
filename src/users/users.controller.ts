@@ -58,7 +58,12 @@ export class UsersController {
   @ApiConsumes('text/json')
   @ApiBody({
     description: 'Email and password.',
-    type: PickType(CreateUserDto, ['email', 'password'] as const),
+    schema: {
+      properties: {
+        email: { type: 'string', example: 'abcd@abcd.com' },
+        password: { type: 'string', example: 'thisisinsecure' },
+      },
+    },
   })
   login(@Request() req) {
     return this.usersService.login(req.user);
@@ -67,7 +72,16 @@ export class UsersController {
   @Get()
   @ApiOkResponse({
     description: 'Query succeeded.',
-    type: [OmitType(CreateUserDto, ['password'] as const)],
+    schema: {
+      type: 'array',
+      items: {
+        properties: {
+          email: { type: 'string' },
+          password: { type: 'string' },
+          birthday: { type: 'string' },
+        },
+      },
+    },
   })
   findAll() {
     return this.usersService.findAll();
@@ -76,7 +90,13 @@ export class UsersController {
   @Get(':id')
   @ApiOkResponse({
     description: 'Query succeeded.',
-    type: [OmitType(CreateUserDto, ['password'] as const)],
+    schema: {
+      properties: {
+        email: { type: 'string' },
+        password: { type: 'string' },
+        birthday: { type: 'string' },
+      },
+    },
   })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
