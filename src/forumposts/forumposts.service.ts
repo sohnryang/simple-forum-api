@@ -98,6 +98,8 @@ export class ForumpostsService {
       .where('hashtag.id = :hashtagId', { hashtagId })
       .leftJoinAndSelect('hashtag.posts', 'posts')
       .getOne();
+    if (!filterResult)
+      throw new NotFoundException(`Hashtag for id ${hashtagId} not found`);
     return filterResult;
   }
 
