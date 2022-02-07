@@ -14,6 +14,7 @@ import { ForumpostsService } from './forumposts.service';
 import { CreateForumpostDto } from './dto/create-forumpost.dto';
 import { UpdateForumpostDto } from './dto/update-forumpost.dto';
 import { JwtAuthGuard } from 'src/users/jwt-auth.guard';
+import { SearchHashtagDto } from './dto/search-hashtag.dto';
 
 @Controller('posts')
 export class ForumpostsController {
@@ -28,6 +29,11 @@ export class ForumpostsController {
   @Get()
   findAll() {
     return this.forumpostsService.findAll();
+  }
+
+  @Get('hashtags')
+  findAllHashtags() {
+    return this.forumpostsService.findAllHashtags();
   }
 
   @Get(':id')
@@ -49,5 +55,15 @@ export class ForumpostsController {
   @Delete(':id')
   remove(@Param('id') id: string, @Request() req) {
     return this.forumpostsService.remove(+id, +req.user.id);
+  }
+
+  @Get('hashtags/:hashtagId')
+  filter(@Param('hashtagId') hashtagId: string) {
+    return this.forumpostsService.findHashtag(+hashtagId);
+  }
+
+  @Post('hashtags/search')
+  searchHashtag(@Body() searchHashtagDto: SearchHashtagDto) {
+    return this.forumpostsService.searchHashtag(searchHashtagDto);
   }
 }

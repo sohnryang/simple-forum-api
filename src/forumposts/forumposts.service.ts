@@ -4,8 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateForumpostDto } from './dto/create-forumpost.dto';
+import { SearchHashtagDto } from './dto/search-hashtag.dto';
 import { UpdateForumpostDto } from './dto/update-forumpost.dto';
 import { Forumpost } from './entities/forumpost.entity';
 import { Hashtag } from './entities/hashtag.entity';
@@ -84,5 +85,25 @@ export class ForumpostsService {
     if (!findResult) throw new NotFoundException(`Post for id ${id} not found`);
     if (authorId != findResult.authorId) throw new ForbiddenException();
     this.forumpostRepository.remove(findResult);
+  }
+
+  async findAllHashtags() {
+    const entities = this.hashtagRepository.find();
+    return entities;
+  }
+
+  async findHashtag(hashtagId: number) {
+    const filterResult = await this.hashtagRepository
+      .createQueryBuilder('hashtag')
+      .where('hashtag.id = :hashtagId', { hashtagId })
+      .leftJoinAndSelect('hashtag.posts', 'posts')
+      .getOne();
+    return filterResult;
+  }
+
+  async searchHashtag(searchHashtagDto: SearchHashtagDto) {
+    return await this.hashtagRepository.find({
+      name: Like(`%${searchHashtagDto.name}%`),
+    });
   }
 }
